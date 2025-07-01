@@ -1,11 +1,11 @@
-
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 
 const ContactCard = ({ icon: Icon, title, content, subContent }: any) => (
   <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in">
@@ -23,11 +23,19 @@ const ContactCard = ({ icon: Icon, title, content, subContent }: any) => (
 );
 
 const BranchCard = ({ name, address, phone, timing, isMain = false }: any) => (
-  <Card className={`animate-fade-in ${isMain ? 'border-gold border-2' : ''} hover:shadow-lg transition-shadow`}>
+  <Card
+    className={`animate-fade-in ${
+      isMain ? "border-gold border-2" : ""
+    } hover:shadow-lg transition-shadow`}
+  >
     <CardHeader className="pb-3">
       <CardTitle className="flex items-center justify-between">
         <span className="text-primary-blue">{name}</span>
-        {isMain && <span className="text-xs bg-gold text-primary-blue px-2 py-1 rounded-full font-semibold">MAIN BRANCH</span>}
+        {isMain && (
+          <span className="text-xs bg-gold text-primary-blue px-2 py-1 rounded-full font-semibold">
+            MAIN BRANCH
+          </span>
+        )}
       </CardTitle>
     </CardHeader>
     <CardContent>
@@ -59,23 +67,25 @@ const BranchCard = ({ name, address, phone, timing, isMain = false }: any) => (
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     // Handle form submission logic here
   };
 
@@ -84,26 +94,26 @@ const Contact = () => {
       icon: Phone,
       title: "Phone Support",
       content: "+91-12345-67890",
-      subContent: "Mon-Sat: 9:00 AM - 6:00 PM"
+      subContent: "Mon-Sat: 9:00 AM - 6:00 PM",
     },
     {
       icon: Mail,
       title: "Email Support",
       content: "info@patpedhi.co.in",
-      subContent: "We'll respond within 24 hours"
+      subContent: "We'll respond within 24 hours",
     },
     {
       icon: MessageCircle,
       title: "WhatsApp Support",
       content: "+91-98765-43210",
-      subContent: "Quick queries and support"
+      subContent: "Quick queries and support",
     },
     {
       icon: Clock,
       title: "Working Hours",
       content: "Mon-Fri: 10:00 AM - 4:00 PM",
-      subContent: "Sat: 10:00 AM - 2:00 PM"
-    }
+      subContent: "Sat: 10:00 AM - 2:00 PM",
+    },
   ];
 
   const branches = [
@@ -112,20 +122,20 @@ const Contact = () => {
       address: "123, Main Road, Pune, Maharashtra 411001",
       phone: "+91-12345-67890",
       timing: "Mon-Fri: 10:00 AM - 4:00 PM",
-      isMain: true
+      isMain: true,
     },
     {
       name: "Shivaji Nagar Branch",
       address: "456, Shivaji Nagar, Pune, Maharashtra 411005",
       phone: "+91-12345-67891",
-      timing: "Mon-Fri: 10:00 AM - 4:00 PM"
+      timing: "Mon-Fri: 10:00 AM - 4:00 PM",
     },
     {
       name: "Kothrud Branch",
       address: "789, Kothrud, Pune, Maharashtra 411038",
       phone: "+91-12345-67892",
-      timing: "Mon-Fri: 10:00 AM - 4:00 PM"
-    }
+      timing: "Mon-Fri: 10:00 AM - 4:00 PM",
+    },
   ];
 
   return (
@@ -136,7 +146,10 @@ const Contact = () => {
           <h1 className="text-4xl lg:text-5xl font-bold mb-4 animate-fade-in">
             Contact Us / <span className="font-marathi">संपर्क</span>
           </h1>
-          <p className="text-xl opacity-90 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <p
+            className="text-xl opacity-90 max-w-3xl mx-auto animate-fade-in"
+            style={{ animationDelay: "200ms" }}
+          >
             We're here to help you with all your banking needs and queries
           </p>
         </div>
@@ -173,14 +186,17 @@ const Contact = () => {
               <Card className="shadow-lg border-0">
                 <CardHeader>
                   <CardTitle className="text-2xl text-primary-blue">
-                    Send us a Message / <span className="font-marathi">संदेश पाठवा</span>
+                    Send us a Message /{" "}
+                    <span className="font-marathi">संदेश पाठवा</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="name" className="text-primary-blue">नाव / Name *</Label>
+                        <Label htmlFor="name" className="text-primary-blue">
+                          नाव / Name *
+                        </Label>
                         <Input
                           id="name"
                           name="name"
@@ -192,7 +208,9 @@ const Contact = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="email" className="text-primary-blue">ईमेल / Email *</Label>
+                        <Label htmlFor="email" className="text-primary-blue">
+                          ईमेल / Email *
+                        </Label>
                         <Input
                           id="email"
                           name="email"
@@ -208,7 +226,9 @@ const Contact = () => {
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="phone" className="text-primary-blue">फोन / Phone</Label>
+                        <Label htmlFor="phone" className="text-primary-blue">
+                          फोन / Phone
+                        </Label>
                         <Input
                           id="phone"
                           name="phone"
@@ -219,7 +239,9 @@ const Contact = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="subject" className="text-primary-blue">विषय / Subject *</Label>
+                        <Label htmlFor="subject" className="text-primary-blue">
+                          विषय / Subject *
+                        </Label>
                         <Input
                           id="subject"
                           name="subject"
@@ -233,7 +255,9 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="message" className="text-primary-blue">संदेश / Message *</Label>
+                      <Label htmlFor="message" className="text-primary-blue">
+                        संदेश / Message *
+                      </Label>
                       <Textarea
                         id="message"
                         name="message"
@@ -246,8 +270,8 @@ const Contact = () => {
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white transition-all hover:scale-105"
                     >
                       Send Message / संदेश पाठवा
@@ -258,24 +282,26 @@ const Contact = () => {
             </div>
 
             {/* Quick Support */}
-            <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+            <div
+              className="animate-fade-in"
+              style={{ animationDelay: "200ms" }}
+            >
               <Card className="shadow-lg border-gold border-2 mb-6">
                 <CardHeader>
                   <CardTitle className="text-2xl text-primary-blue">
-                    Need Immediate Help? / <span className="font-marathi">तातडीची मदत?</span>
+                    Need Immediate Help? /{" "}
+                    <span className="font-marathi">तातडीची मदत?</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <Button 
-                      className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center justify-center space-x-2"
-                    >
+                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center justify-center space-x-2">
                       <MessageCircle className="h-5 w-5" />
                       <span>WhatsApp Support</span>
                     </Button>
-                    
-                    <Button 
-                      variant="outline" 
+
+                    <Button
+                      variant="outline"
                       className="w-full border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white flex items-center justify-center space-x-2"
                     >
                       <Phone className="h-5 w-5" />
@@ -283,9 +309,15 @@ const Contact = () => {
                     </Button>
 
                     <div className="p-4 bg-blue-50 rounded-lg">
-                      <h4 className="font-semibold text-primary-blue mb-2">Emergency Contact</h4>
-                      <p className="text-sm text-gray-700">For urgent banking matters outside working hours:</p>
-                      <p className="font-semibold text-primary-blue">+91-98765-43210</p>
+                      <h4 className="font-semibold text-primary-blue mb-2">
+                        Emergency Contact
+                      </h4>
+                      <p className="text-sm text-gray-700">
+                        For urgent banking matters outside working hours:
+                      </p>
+                      <p className="font-semibold text-primary-blue">
+                        +91-98765-43210
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -293,19 +325,36 @@ const Contact = () => {
 
               <Card className="shadow-lg border-0">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg text-primary-blue mb-4">Common Queries</h3>
+                  <h3 className="font-semibold text-lg text-primary-blue mb-4">
+                    Common Queries
+                  </h3>
                   <div className="space-y-3">
                     <details className="cursor-pointer">
-                      <summary className="text-sm font-medium text-gray-700 hover:text-primary-blue">How to open a new account?</summary>
-                      <p className="text-sm text-gray-600 mt-2 pl-4">Visit any branch with required documents or apply online through our website.</p>
+                      <summary className="text-sm font-medium text-gray-700 hover:text-primary-blue">
+                        How to open a new account?
+                      </summary>
+                      <p className="text-sm text-gray-600 mt-2 pl-4">
+                        Visit any branch with required documents or apply online
+                        through our website.
+                      </p>
                     </details>
                     <details className="cursor-pointer">
-                      <summary className="text-sm font-medium text-gray-700 hover:text-primary-blue">What are the loan interest rates?</summary>
-                      <p className="text-sm text-gray-600 mt-2 pl-4">Interest rates vary by loan type. Check our Loans page for current rates.</p>
+                      <summary className="text-sm font-medium text-gray-700 hover:text-primary-blue">
+                        What are the loan interest rates?
+                      </summary>
+                      <p className="text-sm text-gray-600 mt-2 pl-4">
+                        Interest rates vary by loan type. Check our Loans page
+                        for current rates.
+                      </p>
                     </details>
                     <details className="cursor-pointer">
-                      <summary className="text-sm font-medium text-gray-700 hover:text-primary-blue">How to activate mobile banking?</summary>
-                      <p className="text-sm text-gray-600 mt-2 pl-4">Visit your nearest branch or call our customer support for activation.</p>
+                      <summary className="text-sm font-medium text-gray-700 hover:text-primary-blue">
+                        How to activate mobile banking?
+                      </summary>
+                      <p className="text-sm text-gray-600 mt-2 pl-4">
+                        Visit your nearest branch or call our customer support
+                        for activation.
+                      </p>
                     </details>
                   </div>
                 </CardContent>
@@ -347,15 +396,17 @@ const Contact = () => {
             आमच्याकडे या आणि अनुभवा उत्कृष्ट सेवा
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
-            >
-              Book an Appointment
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
+            <Link to="/book-appointment">
+              <Button
+                size="lg"
+                className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
+              >
+                Book an Appointment
+              </Button>
+            </Link>
+            <Button
+              size="lg"
+              variant="outline"
               className="border-white text-white hover:bg-white hover:text-primary-blue transition-all"
             >
               Find Nearest Branch

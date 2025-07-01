@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { Handshake, Coins, Car, Calculator, CheckCircle, User, TrendingUp, Shield } from 'lucide-react';
 
 const LoanCard = ({ icon: Icon, title, marathiTitle, interestRate, features, maxAmount, tenure, isPopular = false }: any) => (
