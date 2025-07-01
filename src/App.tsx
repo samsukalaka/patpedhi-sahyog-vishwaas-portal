@@ -15,6 +15,9 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import ApplyMembership from "./pages/ApplyMembership";
 import OpenAccount from "./pages/OpenAccount";
+import ApplyDeposit from "./pages/ApplyDeposit";
+import ApplyLoan from "./pages/ApplyLoan";
+import BookAppointment from "./pages/BookAppointment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,20 +28,25 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white flex flex-col">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/deposits" element={<Deposits />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/apply-membership" element={<ApplyMembership />} />
-            <Route path="/open-account" element={<OpenAccount />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/deposits" element={<Deposits />} />
+              <Route path="/loans" element={<Loans />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/apply-membership" element={<ApplyMembership />} />
+              <Route path="/open-account" element={<OpenAccount />} />
+              <Route path="/apply-deposit" element={<ApplyDeposit />} />
+              <Route path="/apply-loan" element={<ApplyLoan />} />
+              <Route path="/book-appointment" element={<BookAppointment />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
           <Footer />
         </div>
       </BrowserRouter>

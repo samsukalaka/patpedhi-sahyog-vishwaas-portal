@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,20 +40,17 @@ All colors MUST be HSL.
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Custom Patpedhi Colors */
+    --primary-blue: 213 100% 35%;  /* #0056b3 */
+    --gold: 45 100% 55%;          /* #f8a51b */
   }
 
   .dark {
@@ -102,4 +100,112 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom utilities */
+.text-primary-blue {
+  color: hsl(var(--primary-blue));
+}
+
+.bg-primary-blue {
+  background-color: hsl(var(--primary-blue));
+}
+
+.text-gold {
+  color: hsl(var(--gold));
+}
+
+.bg-gold {
+  background-color: hsl(var(--gold));
+}
+
+.border-primary-blue {
+  border-color: hsl(var(--primary-blue));
+}
+
+.border-gold {
+  border-color: hsl(var(--gold));
+}
+
+.hover\:bg-primary-blue:hover {
+  background-color: hsl(var(--primary-blue));
+}
+
+.hover\:text-gold:hover {
+  color: hsl(var(--gold));
+}
+
+.hover\:bg-gold:hover {
+  background-color: hsl(var(--gold));
+}
+
+.hover\:bg-gold\/90:hover {
+  background-color: hsl(var(--gold) / 0.9);
+}
+
+.hover\:bg-primary-blue\/90:hover {
+  background-color: hsl(var(--primary-blue) / 0.9);
+}
+
+.bg-primary-blue\/10 {
+  background-color: hsl(var(--primary-blue) / 0.1);
+}
+
+.bg-primary-blue\/5 {
+  background-color: hsl(var(--primary-blue) / 0.05);
+}
+
+.bg-gold\/20 {
+  background-color: hsl(var(--gold) / 0.2);
+}
+
+/* Font families */
+.font-marathi {
+  font-family: 'Tiro Devanagari Marathi', serif;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out forwards;
 }

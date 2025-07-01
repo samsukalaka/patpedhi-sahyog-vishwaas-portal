@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,7 +42,7 @@ const SchemeCard = ({ icon: Icon, title, marathiTitle, interestRate, features, m
         ))}
       </ul>
       
-      <Link to="/open-account">
+      <Link to="/apply-deposit">
         <Button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white">
           Apply Now / आता अर्ज करा
         </Button>
@@ -280,7 +279,7 @@ const Deposits = () => {
                       </div>
                     </div>
                     
-                    <Link to="/open-account">
+                    <Link to="/apply-deposit">
                       <Button className="w-full mt-6 bg-gold text-primary-blue hover:bg-gold/90">
                         Start Your Investment
                         <ArrowRight className="ml-2 h-4 w-4" />
@@ -347,7 +346,7 @@ const Deposits = () => {
             आजच सुरू करा आपली बचतीची वाटचाल
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/open-account">
+            <Link to="/apply-deposit">
               <Button 
                 size="lg" 
                 className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
@@ -355,7 +354,7 @@ const Deposits = () => {
                 Open Account Now
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link to="/book-appointment">
               <Button 
                 size="lg" 
                 variant="outline" 
