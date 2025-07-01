@@ -1,5 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PiggyBank, Calendar, Handshake, Users, Building, Award } from 'lucide-react';
@@ -28,19 +28,21 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number, d
   return <span>{count}{suffix}</span>;
 };
 
-const ServiceCard = ({ icon: Icon, title, description, delay }: any) => (
-  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer animate-fade-in border-0 shadow-md" 
-        style={{ animationDelay: `${delay}ms` }}>
-    <CardContent className="p-6 text-center">
-      <div className="mb-4 flex justify-center">
-        <div className="p-3 bg-primary-blue/10 rounded-full group-hover:bg-primary-blue group-hover:text-white transition-all duration-300">
-          <Icon className="h-8 w-8 text-primary-blue group-hover:text-white" />
+const ServiceCard = ({ icon: Icon, title, description, delay, linkTo }: any) => (
+  <Link to={linkTo}>
+    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer animate-fade-in border-0 shadow-md" 
+          style={{ animationDelay: `${delay}ms` }}>
+      <CardContent className="p-6 text-center">
+        <div className="mb-4 flex justify-center">
+          <div className="p-3 bg-primary-blue/10 rounded-full group-hover:bg-primary-blue group-hover:text-white transition-all duration-300">
+            <Icon className="h-8 w-8 text-primary-blue group-hover:text-white" />
+          </div>
         </div>
-      </div>
-      <h3 className="font-semibold text-lg mb-2 text-primary-blue">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
-    </CardContent>
-  </Card>
+        <h3 className="font-semibold text-lg mb-2 text-primary-blue">{title}</h3>
+        <p className="text-gray-600 text-sm">{description}</p>
+      </CardContent>
+    </Card>
+  </Link>
 );
 
 const Index = () => {
@@ -76,12 +78,14 @@ const Index = () => {
               <p className="text-xl mb-8 opacity-90">
                 Your Trusted Cooperative Credit Society since 1995
               </p>
-              <Button 
-                size="lg" 
-                className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
-              >
-                Open an Account आता! <Handshake className="ml-2 h-5 w-5" />
-              </Button>
+              <Link to="/open-account">
+                <Button 
+                  size="lg" 
+                  className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
+                >
+                  Open an Account आता! <Handshake className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </div>
             
             <div className="lg:w-1/2 grid grid-cols-2 gap-6 animate-scale-in">
@@ -114,7 +118,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Announcements Ticker */}
       <section className="bg-gold text-primary-blue py-3">
         <div className="container mx-auto px-4">
           <div className="flex items-center">
@@ -146,24 +149,26 @@ const Index = () => {
               title="सावकारी योजना / Deposits"
               description="Secure savings with attractive interest rates and flexible terms"
               delay={0}
+              linkTo="/deposits"
             />
             <ServiceCard 
               icon={Handshake}
               title="कर्ज सेवा / Loans"
               description="Quick and hassle-free loans for all your financial needs"
               delay={200}
+              linkTo="/loans"
             />
             <ServiceCard 
               icon={Calendar}
               title="डिजिटल बँकिंग / Digital Banking"
               description="Modern banking solutions at your fingertips"
               delay={400}
+              linkTo="/services"
             />
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -216,19 +221,23 @@ const Index = () => {
             आजच आमच्या सोबत करा आपली आर्थिक प्रगती
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
-            >
-              Open Account Today
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary-blue transition-all"
-            >
-              Learn More
-            </Button>
+            <Link to="/open-account">
+              <Button 
+                size="lg" 
+                className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
+              >
+                Open Account Today
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-primary-blue transition-all"
+              >
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

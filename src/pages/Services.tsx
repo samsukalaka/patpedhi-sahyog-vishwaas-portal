@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Smartphone, CreditCard, Building, FileText, Globe, Shield } from 'lucide-react';
+import { Smartphone, CreditCard, Building, FileText, Globe, Shield, Lock, Users, Award } from 'lucide-react';
 
-const ServiceCard = ({ icon: Icon, title, marathiTitle, description, features, isPopular = false }: any) => (
+const ServiceCard = ({ icon: Icon, title, marathiTitle, description, features, isPopular = false, ctaLink = "/apply-membership" }: any) => (
   <Card className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in relative ${isPopular ? 'border-gold border-2' : 'border-0'}`}>
     {isPopular && (
       <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gold text-primary-blue font-bold">
@@ -29,9 +30,11 @@ const ServiceCard = ({ icon: Icon, title, marathiTitle, description, features, i
           </li>
         ))}
       </ul>
-      <Button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white">
-        Learn More / अधिक जाणा
-      </Button>
+      <Link to={ctaLink}>
+        <Button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white">
+          Learn More / अधिक जाणा
+        </Button>
+      </Link>
     </CardContent>
   </Card>
 );
@@ -53,7 +56,7 @@ const DigitalFeature = ({ icon: Icon, title, description }: any) => (
 const Services = () => {
   const [activeTab, setActiveTab] = useState('digital');
 
-  const mainServices = [
+  const digitalServices = [
     {
       icon: Smartphone,
       title: "Mobile Banking",
@@ -66,10 +69,56 @@ const Services = () => {
         "Mini statement download",
         "Cheque book request"
       ],
-      isPopular: true
+      isPopular: true,
+      ctaLink: "/login"
     },
     {
+      icon: Globe,
+      title: "Internet Banking",
+      marathiTitle: "इंटरनेट बँकिंग",
+      description: "Secure online banking platform for comprehensive financial management.",
+      features: [
+        "24/7 online access",
+        "Transaction history",
+        "Fund management tools",
+        "Multi-factor authentication",
+        "Digital statements"
+      ],
+      ctaLink: "/login"
+    },
+    {
+      icon: FileText,
+      title: "Digital Documentation",
+      marathiTitle: "डिजिटल कागदपत्रे",
+      description: "Paperless documentation and digital record keeping for all your transactions.",
+      features: [
+        "E-statements and receipts",
+        "Digital loan applications",
+        "Online KYC verification",
+        "Cloud storage backup",
+        "Instant document access"
+      ],
+      ctaLink: "/apply-membership"
+    }
+  ];
+
+  const traditionalServices = [
+    {
       icon: Building,
+      title: "Branch Banking",
+      marathiTitle: "शाखा बँकिंग",
+      description: "Personal banking services at our physical branch locations with dedicated staff.",
+      features: [
+        "Face-to-face consultation",
+        "Cash deposits and withdrawals",
+        "Document verification",
+        "Personalized service",
+        "Local language support"
+      ],
+      ctaLink: "/contact"
+    },
+    {
+      icon: Lock,
       title: "Locker Facility",
       marathiTitle: "लॉकर सुविधा",
       description: "Safe and secure locker facility to store your valuable documents and jewelry.",
@@ -79,22 +128,82 @@ const Services = () => {
         "Competitive annual charges",
         "Insurance coverage included",
         "Easy access during working hours"
-      ]
+      ],
+      ctaLink: "/contact"
     },
     {
       icon: CreditCard,
-      title: "Micro ATM Services", 
-      marathiTitle: "मायक्रो एटीएम सेवा",
-      description: "Banking services at your doorstep through our extensive micro ATM network.",
+      title: "Passbook Services",
+      marathiTitle: "पासबुक सेवा",
+      description: "Traditional passbook services for transaction recording and account management.",
       features: [
-        "Cash withdrawal facility",
-        "Balance inquiry service",
-        "Aadhaar-based transactions",
-        "Rural area coverage",
-        "No additional charges"
-      ]
+        "Physical transaction record",
+        "Regular passbook printing",
+        "Balance verification",
+        "Historical transaction data",
+        "Easy account monitoring"
+      ],
+      ctaLink: "/open-account"
     }
   ];
+
+  const premiumServices = [
+    {
+      icon: Users,
+      title: "Priority Banking",
+      marathiTitle: "प्राथमिकता बँकिंग",
+      description: "Exclusive banking services for high-value customers with dedicated relationship managers.",
+      features: [
+        "Dedicated relationship manager",
+        "Priority customer service",
+        "Exclusive banking hours",
+        "Waived processing fees",
+        "Investment advisory services"
+      ],
+      ctaLink: "/contact"
+    },
+    {
+      icon: Award,
+      title: "Wealth Management",
+      marathiTitle: "संपत्ती व्यवस्थापन",
+      description: "Comprehensive wealth management solutions for affluent members.",
+      features: [
+        "Portfolio management",
+        "Investment planning",
+        "Tax optimization strategies",
+        "Estate planning services",
+        "Financial goal setting"
+      ],
+      ctaLink: "/contact"
+    },
+    {
+      icon: Shield,
+      title: "Insurance Services",
+      marathiTitle: "विमा सेवा",
+      description: "Comprehensive insurance solutions to protect you and your family.",
+      features: [
+        "Life insurance policies",
+        "Health insurance coverage",
+        "Property insurance",
+        "Vehicle insurance",
+        "Group insurance schemes"
+      ],
+      ctaLink: "/contact"
+    }
+  ];
+
+  const getCurrentServices = () => {
+    switch (activeTab) {
+      case 'digital':
+        return digitalServices;
+      case 'traditional':
+        return traditionalServices;
+      case 'premium':
+        return premiumServices;
+      default:
+        return digitalServices;
+    }
+  };
 
   const digitalFeatures = [
     {
@@ -171,20 +280,24 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Main Services Grid */}
+      {/* Dynamic Services Grid */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-4">
-              Core Banking Services
+              {activeTab === 'digital' && 'Digital Banking Services'}
+              {activeTab === 'traditional' && 'Traditional Banking Services'}
+              {activeTab === 'premium' && 'Premium Banking Services'}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Modern banking solutions with traditional values and personal touch
+              {activeTab === 'digital' && 'Modern digital solutions for convenient banking'}
+              {activeTab === 'traditional' && 'Time-tested banking services with personal touch'}
+              {activeTab === 'premium' && 'Exclusive services for our valued premium members'}
             </p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {mainServices.map((service, index) => (
+            {getCurrentServices().map((service, index) => (
               <div key={index} style={{ animationDelay: `${index * 200}ms` }}>
                 <ServiceCard {...service} />
               </div>
@@ -193,75 +306,81 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Digital Banking Features */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-4">
-              Digital Banking Features / <span className="font-marathi">डिजिटल बँकिंग</span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Experience the future of banking with our comprehensive digital solutions
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {digitalFeatures.map((feature, index) => (
-              <div key={index} style={{ animationDelay: `${index * 150}ms` }}>
-                <DigitalFeature {...feature} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* QR Code Demo Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-6">
-                Scan & Pay with PatPay
+      {/* Digital Banking Features (only show for digital tab) */}
+      {activeTab === 'digital' && (
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-4">
+                Digital Banking Features / <span className="font-marathi">डिजिटल बँकिंग</span>
               </h2>
-              <p className="text-gray-600 mb-6 text-lg">
-                Make instant payments using our secure QR code system. Simple, fast, and completely secure.
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Experience the future of banking with our comprehensive digital solutions
               </p>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
-                  <span>Instant payment confirmation</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
-                  <span>No transaction charges</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
-                  <span>Available 24/7</span>
-                </div>
-              </div>
-              <Button className="mt-6 bg-primary-blue hover:bg-primary-blue/90 text-white">
-                Download PatPay App
-              </Button>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-lg text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
-              <div className="w-48 h-48 bg-gray-100 rounded-lg mx-auto mb-6 flex items-center justify-center">
-                <div className="grid grid-cols-8 gap-1">
-                  {[...Array(64)].map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`w-2 h-2 ${Math.random() > 0.5 ? 'bg-primary-blue' : 'bg-white'} rounded-sm`}
-                    ></div>
-                  ))}
+            <div className="grid md:grid-cols-2 gap-6">
+              {digitalFeatures.map((feature, index) => (
+                <div key={index} style={{ animationDelay: `${index * 150}ms` }}>
+                  <DigitalFeature {...feature} />
                 </div>
-              </div>
-              <p className="text-primary-blue font-semibold mb-2">Demo QR Code</p>
-              <p className="text-gray-600 text-sm">Scan to experience PatPay</p>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* QR Code Demo Section (only show for digital tab) */}
+      {activeTab === 'digital' && (
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="animate-fade-in">
+                <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-6">
+                  Scan & Pay with PatPay
+                </h2>
+                <p className="text-gray-600 mb-6 text-lg">
+                  Make instant payments using our secure QR code system. Simple, fast, and completely secure.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
+                    <span>Instant payment confirmation</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
+                    <span>No transaction charges</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
+                    <span>Available 24/7</span>
+                  </div>
+                </div>
+                <Link to="/login">
+                  <Button className="mt-6 bg-primary-blue hover:bg-primary-blue/90 text-white">
+                    Download PatPay App
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="bg-white p-8 rounded-lg shadow-lg text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
+                <div className="w-48 h-48 bg-gray-100 rounded-lg mx-auto mb-6 flex items-center justify-center">
+                  <div className="grid grid-cols-8 gap-1">
+                    {[...Array(64)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className={`w-2 h-2 ${Math.random() > 0.5 ? 'bg-primary-blue' : 'bg-white'} rounded-sm`}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-primary-blue font-semibold mb-2">Demo QR Code</p>
+                <p className="text-gray-600 text-sm">Scan to experience PatPay</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Service Hours */}
       <section className="py-16 bg-primary-blue text-white">
@@ -313,19 +432,23 @@ const Services = () => {
             आधुनिक बँकिंगचा आस्वाद घ्या आमच्या सोबत
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-primary-blue text-white hover:bg-primary-blue/90 transition-all hover:scale-105"
-            >
-              Register for Digital Banking
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white transition-all"
-            >
-              Visit Nearest Branch
-            </Button>
+            <Link to="/login">
+              <Button 
+                size="lg" 
+                className="bg-primary-blue text-white hover:bg-primary-blue/90 transition-all hover:scale-105"
+              >
+                Register for Digital Banking
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white transition-all"
+              >
+                Visit Nearest Branch
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

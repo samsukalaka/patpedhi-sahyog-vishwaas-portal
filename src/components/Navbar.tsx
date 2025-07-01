@@ -102,12 +102,14 @@ const Navbar = () => {
 
             <div className="flex items-center space-x-2">
               <span className="text-sm font-marathi">स्वागत आहे</span>
-              <Button 
-                variant="secondary" 
-                className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
-              >
-                Login / Apply
-              </Button>
+              <Link to="/login">
+                <Button 
+                  variant="secondary" 
+                  className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
+                >
+                  Login / Apply
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -131,12 +133,14 @@ const Navbar = () => {
               <Link to="/services" className="block py-2 hover:text-gold transition-colors">Services</Link>
               <Link to="/contact" className="block py-2 hover:text-gold transition-colors">Contact Us</Link>
               <div className="pt-2">
-                <Button 
-                  variant="secondary" 
-                  className="w-full bg-gold text-primary-blue hover:bg-gold/90"
-                >
-                  Login / Apply
-                </Button>
+                <Link to="/login">
+                  <Button 
+                    variant="secondary" 
+                    className="w-full bg-gold text-primary-blue hover:bg-gold/90"
+                  >
+                    Login / Apply
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

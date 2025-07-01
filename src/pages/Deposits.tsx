@@ -1,149 +1,128 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PiggyBank, Calendar, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { PiggyBank, TrendingUp, Calendar, Calculator, CheckCircle, ArrowRight } from 'lucide-react';
 
-const DepositCard = ({ icon: Icon, title, marathiTitle, description, features, bgColor }: any) => (
-  <Card className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${bgColor} border-0 animate-fade-in`}>
+const SchemeCard = ({ icon: Icon, title, marathiTitle, interestRate, features, minAmount, tenure, isPopular = false }: any) => (
+  <Card className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in relative ${isPopular ? 'border-gold border-2' : 'border-0'}`}>
+    {isPopular && (
+      <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gold text-primary-blue font-bold">
+        Most Popular
+      </Badge>
+    )}
     <CardHeader className="text-center pb-4">
-      <div className="mx-auto mb-4 p-4 bg-white/80 rounded-full group-hover:bg-white transition-colors">
-        <Icon className="h-12 w-12 text-primary-blue" />
+      <div className="mx-auto mb-4 p-4 bg-primary-blue/10 rounded-full group-hover:bg-primary-blue transition-colors duration-300">
+        <Icon className="h-12 w-12 text-primary-blue group-hover:text-white transition-colors duration-300" />
       </div>
       <CardTitle className="text-xl text-primary-blue mb-2">{title}</CardTitle>
-      <p className="font-marathi text-lg text-primary-blue/80">{marathiTitle}</p>
+      <p className="font-marathi text-lg text-primary-blue/80 mb-2">{marathiTitle}</p>
+      <div className="text-2xl font-bold text-gold">{interestRate}</div>
+      <p className="text-sm text-gray-600">Interest Rate</p>
     </CardHeader>
     <CardContent>
-      <p className="text-gray-700 mb-4">{description}</p>
-      <ul className="space-y-2">
+      <div className="space-y-4 mb-6">
+        <div className="flex justify-between text-sm">
+          <span className="text-gray-600">Minimum Amount:</span>
+          <span className="font-semibold">{minAmount}</span>
+        </div>
+        <div className="flex justify-between text-sm">
+          <span className="text-gray-600">Tenure:</span>
+          <span className="font-semibold">{tenure}</span>
+        </div>
+      </div>
+      
+      <ul className="space-y-2 mb-6">
         {features.map((feature: string, index: number) => (
           <li key={index} className="flex items-center text-sm text-gray-600">
-            <div className="w-2 h-2 bg-primary-blue rounded-full mr-3"></div>
+            <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
             {feature}
           </li>
         ))}
       </ul>
-      <Button className="w-full mt-6 bg-primary-blue hover:bg-primary-blue/90 text-white">
-        Apply Now / आता अर्ज करा
-      </Button>
+      
+      <Link to="/open-account">
+        <Button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white">
+          Apply Now / आता अर्ज करा
+        </Button>
+      </Link>
     </CardContent>
   </Card>
 );
 
-const InterestRateRow = ({ scheme, rates, isOpen, onToggle }: any) => (
-  <div className="border-b border-gray-200">
-    <div 
-      className="flex justify-between items-center p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-      onClick={onToggle}
-    >
-      <div>
-        <h3 className="font-semibold text-primary-blue">{scheme.name}</h3>
-        <p className="text-sm text-gray-600 font-marathi">{scheme.marathi}</p>
-      </div>
-      <div className="flex items-center space-x-4">
-        <span className="text-2xl font-bold text-gold">{rates.main}%</span>
-        {isOpen ? <ChevronUp className="h-5 w-5 text-gray-400" /> : <ChevronDown className="h-5 w-5 text-gray-400" />}
-      </div>
-    </div>
-    {isOpen && (
-      <div className="px-4 pb-4 bg-gray-50 animate-fade-in">
-        <div className="grid md:grid-cols-3 gap-4">
-          {rates.details.map((detail: any, index: number) => (
-            <div key={index} className="bg-white p-3 rounded-lg">
-              <p className="text-sm font-semibold text-primary-blue">{detail.period}</p>
-              <p className="text-lg font-bold text-gold">{detail.rate}%</p>
-              {detail.note && <p className="text-xs text-gray-500 mt-1">{detail.note}</p>}
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-  </div>
-);
-
 const Deposits = () => {
-  const [openRate, setOpenRate] = useState<number | null>(null);
+  const [selectedCalculator, setSelectedCalculator] = useState('savings');
+  const [calculatorValues, setCalculatorValues] = useState({
+    principal: 10000,
+    rate: 4.5,
+    time: 1
+  });
 
   const depositSchemes = [
     {
       icon: PiggyBank,
       title: "Savings Account",
       marathiTitle: "बचत खाते",
-      description: "Start your financial journey with our flexible savings account offering competitive interest rates.",
+      interestRate: "4.5% p.a.",
+      minAmount: "₹100",
+      tenure: "Ongoing",
       features: [
-        "Minimum balance: ₹1,000",
-        "4.5% annual interest rate",
-        "Free checkbook and debit card",
+        "No minimum balance required",
+        "Unlimited transactions",
+        "Free debit card",
         "Mobile banking facility",
-        "Quarterly interest calculation"
+        "Monthly interest credit"
       ],
-      bgColor: "bg-blue-50"
-    },
-    {
-      icon: Calendar,
-      title: "Fixed Deposit",
-      marathiTitle: "मुदत ठेव",
-      description: "Secure your future with guaranteed returns through our fixed deposit schemes.",
-      features: [
-        "Tenure: 1 to 5 years",
-        "Interest rates up to 8.5%",
-        "Loan facility against FD",
-        "Premature withdrawal option",
-        "Automatic renewal facility"
-      ],
-      bgColor: "bg-green-50"
+      isPopular: true
     },
     {
       icon: TrendingUp,
+      title: "Fixed Deposit",
+      marathiTitle: "मुदती ठेव",
+      interestRate: "6.5% p.a.",
+      minAmount: "₹1,000",
+      tenure: "1-5 years",
+      features: [
+        "Higher interest rates",
+        "Flexible tenure options",
+        "Loan against FD facility",
+        "Automatic renewal option",
+        "Tax benefits available"
+      ]
+    },
+    {
+      icon: Calendar,
       title: "Recurring Deposit",
       marathiTitle: "आवर्ती ठेव",
-      description: "Build wealth systematically with our recurring deposit scheme for regular savers.",
+      interestRate: "6.0% p.a.",
+      minAmount: "₹100/month",
+      tenure: "1-10 years",
       features: [
-        "Monthly installments from ₹500",
-        "Tenure: 12 to 60 months",
-        "7.5% annual interest rate",
-        "Flexible payment options",
-        "Maturity amount calculation"
-      ],
-      bgColor: "bg-yellow-50"
+        "Systematic monthly savings",
+        "Disciplined saving habit",
+        "Competitive interest rates",
+        "Premature withdrawal allowed",
+        "Easy EMI planning"
+      ]
     }
   ];
 
-  const interestRates = [
-    {
-      scheme: { name: "Savings Account", marathi: "बचत खाते" },
-      rates: {
-        main: 4.5,
-        details: [
-          { period: "Regular Savings", rate: "4.5", note: "Minimum ₹1,000" },
-          { period: "Senior Citizen", rate: "5.0", note: "Age 60+" },
-          { period: "Children Account", rate: "5.5", note: "Age below 18" }
-        ]
-      }
-    },
-    {
-      scheme: { name: "Fixed Deposit", marathi: "मुदत ठेव" },
-      rates: {
-        main: 8.5,
-        details: [
-          { period: "1-2 Years", rate: "7.5", note: "Minimum ₹10,000" },
-          { period: "2-3 Years", rate: "8.0", note: "Best for medium term" },
-          { period: "3-5 Years", rate: "8.5", note: "Highest returns" }
-        ]
-      }
-    },
-    {
-      scheme: { name: "Recurring Deposit", marathi: "आवर्ती ठेव" },
-      rates: {
-        main: 7.5,
-        details: [
-          { period: "12 Months", rate: "7.0", note: "Short term" },
-          { period: "24 Months", rate: "7.25", note: "Medium term" },
-          { period: "36-60 Months", rate: "7.5", note: "Long term benefits" }
-        ]
-      }
+  const calculateMaturity = () => {
+    const { principal, rate, time } = calculatorValues;
+    if (selectedCalculator === 'savings') {
+      return principal * Math.pow(1 + rate / 100, time);
+    } else if (selectedCalculator === 'fd') {
+      return principal * (1 + (rate / 100) * time);
+    } else {
+      // RD calculation
+      const monthlyAmount = principal;
+      const months = time * 12;
+      const monthlyRate = rate / 100 / 12;
+      return monthlyAmount * months * (1 + monthlyRate * (months + 1) / 2);
     }
-  ];
+  };
 
   return (
     <div className="min-h-screen">
@@ -154,7 +133,7 @@ const Deposits = () => {
             Deposit Schemes / <span className="font-marathi">ठेवी योजना</span>
           </h1>
           <p className="text-xl opacity-90 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '200ms' }}>
-            Secure your financial future with our attractive deposit schemes
+            Secure your future with our attractive deposit schemes and competitive interest rates
           </p>
         </div>
       </section>
@@ -164,47 +143,151 @@ const Deposits = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-4">
-              Choose Your Savings Plan
+              Our Deposit Products
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Flexible deposit options designed to help you achieve your financial goals
+              Choose from our range of deposit products designed to help you save and grow your money
             </p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
             {depositSchemes.map((scheme, index) => (
               <div key={index} style={{ animationDelay: `${index * 200}ms` }}>
-                <DepositCard {...scheme} />
+                <SchemeCard {...scheme} />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Interest Rates Table */}
+      {/* Interest Rate Calculator */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-4">
-              Current Interest Rates / <span className="font-marathi">व्याजदर</span>
+              Interest Calculator / <span className="font-marathi">व्याज कॅल्क्युलेटर</span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Competitive rates updated regularly for maximum returns
+              Calculate your returns and plan your investments with our easy-to-use calculator
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="shadow-lg border-0">
-              <CardContent className="p-0">
-                {interestRates.map((item, index) => (
-                  <InterestRateRow
-                    key={index}
-                    scheme={item.scheme}
-                    rates={item.rates}
-                    isOpen={openRate === index}
-                    onToggle={() => setOpenRate(openRate === index ? null : index)}
-                  />
-                ))}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center text-primary-blue">
+                  <Calculator className="h-8 w-8 mx-auto mb-2" />
+                  Investment Calculator
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    {/* Calculator Type Selection */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Select Deposit Type:
+                      </label>
+                      <div className="flex space-x-2">
+                        {[
+                          { id: 'savings', label: 'Savings' },
+                          { id: 'fd', label: 'Fixed Deposit' },
+                          { id: 'rd', label: 'Recurring Deposit' }
+                        ].map((type) => (
+                          <button
+                            key={type.id}
+                            onClick={() => setSelectedCalculator(type.id)}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                              selectedCalculator === type.id
+                                ? 'bg-primary-blue text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                          >
+                            {type.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Input Fields */}
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {selectedCalculator === 'rd' ? 'Monthly Amount (₹)' : 'Principal Amount (₹)'}
+                        </label>
+                        <input
+                          type="number"
+                          value={calculatorValues.principal}
+                          onChange={(e) => setCalculatorValues({...calculatorValues, principal: Number(e.target.value)})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-blue"
+                          placeholder="Enter amount"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Interest Rate (% p.a.)
+                        </label>
+                        <input
+                          type="number"
+                          step="0.1"
+                          value={calculatorValues.rate}
+                          onChange={(e) => setCalculatorValues({...calculatorValues, rate: Number(e.target.value)})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-blue"
+                          placeholder="Enter rate"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Time Period (Years)
+                        </label>
+                        <input
+                          type="number"
+                          value={calculatorValues.time}
+                          onChange={(e) => setCalculatorValues({...calculatorValues, time: Number(e.target.value)})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-blue"
+                          placeholder="Enter years"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-primary-blue/5 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-primary-blue mb-4">Calculation Results</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">
+                          {selectedCalculator === 'rd' ? 'Total Investment:' : 'Principal Amount:'}
+                        </span>
+                        <span className="font-semibold">
+                          ₹{(selectedCalculator === 'rd' ? calculatorValues.principal * calculatorValues.time * 12 : calculatorValues.principal).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Interest Earned:</span>
+                        <span className="font-semibold text-green-600">
+                          ₹{(calculateMaturity() - (selectedCalculator === 'rd' ? calculatorValues.principal * calculatorValues.time * 12 : calculatorValues.principal)).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="border-t pt-4">
+                        <div className="flex justify-between">
+                          <span className="text-lg font-semibold text-primary-blue">Maturity Amount:</span>
+                          <span className="text-xl font-bold text-primary-blue">
+                            ₹{calculateMaturity().toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Link to="/open-account">
+                      <Button className="w-full mt-6 bg-gold text-primary-blue hover:bg-gold/90">
+                        Start Your Investment
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -216,69 +299,71 @@ const Deposits = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary-blue mb-4">
-              Why Save With Us? / <span className="font-marathi">आमच्यासोबत का बचत करा?</span>
+              Why Choose Our Deposits?
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center animate-fade-in">
-              <div className="bg-primary-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-primary-blue font-bold text-2xl">🛡️</span>
+              <div className="mb-4 flex justify-center">
+                <div className="p-4 bg-blue-100 rounded-full">
+                  <CheckCircle className="h-10 w-10 text-primary-blue" />
+                </div>
               </div>
-              <h3 className="font-semibold text-lg mb-2">Safe & Secure</h3>
-              <p className="text-gray-600 text-sm">RBI registered and insured deposits</p>
-            </div>
-
-            <div className="text-center animate-fade-in" style={{ animationDelay: '100ms' }}>
-              <div className="bg-gold/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-gold font-bold text-2xl">📈</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">High Returns</h3>
-              <p className="text-gray-600 text-sm">Better rates than traditional banks</p>
+              <h3 className="font-semibold text-xl mb-2">RBI Insured</h3>
+              <p className="text-gray-600">Your deposits are safe and insured as per RBI guidelines</p>
             </div>
 
             <div className="text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-green-600 font-bold text-2xl">⚡</span>
+              <div className="mb-4 flex justify-center">
+                <div className="p-4 bg-gold/20 rounded-full">
+                  <TrendingUp className="h-10 w-10 text-gold" />
+                </div>
               </div>
-              <h3 className="font-semibold text-lg mb-2">Quick Processing</h3>
-              <p className="text-gray-600 text-sm">Fast account opening and processing</p>
+              <h3 className="font-semibold text-xl mb-2">Competitive Rates</h3>
+              <p className="text-gray-600">Attractive interest rates better than market standards</p>
             </div>
 
-            <div className="text-center animate-fade-in" style={{ animationDelay: '300ms' }}>
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-purple-600 font-bold text-2xl">🤝</span>
+            <div className="text-center animate-fade-in" style={{ animationDelay: '400ms' }}>
+              <div className="mb-4 flex justify-center">
+                <div className="p-4 bg-green-100 rounded-full">
+                  <PiggyBank className="h-10 w-10 text-green-600" />
+                </div>
               </div>
-              <h3 className="font-semibold text-lg mb-2">Personal Service</h3>
-              <p className="text-gray-600 text-sm">Dedicated relationship managers</p>
+              <h3 className="font-semibold text-xl mb-2">Flexible Options</h3>
+              <p className="text-gray-600">Various tenure and amount options to suit your needs</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-primary-blue text-white py-16">
+      <section className="py-16 bg-primary-blue text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
             Start Your Savings Journey Today
           </h2>
           <p className="text-xl mb-8 opacity-90 font-marathi">
-            आजच सुरू करा आपली बचतीची आर्थिक यात्रा
+            आजच सुरू करा आपली बचतीची वाटचाल
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
-            >
-              Open Account Now
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary-blue transition-all"
-            >
-              Download Brochure
-            </Button>
+            <Link to="/open-account">
+              <Button 
+                size="lg" 
+                className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
+              >
+                Open Account Now
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-primary-blue transition-all"
+              >
+                Book an Appointment
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
