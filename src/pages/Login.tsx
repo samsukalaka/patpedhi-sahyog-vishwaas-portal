@@ -36,7 +36,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome to Patpedhi Member Portal",
       });
-      navigate('/member-dashboard');
+      navigate('/'); // Redirect to homepage instead of dashboard
     } else {
       toast({
         title: "Login Failed",

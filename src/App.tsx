@@ -63,9 +63,9 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
   
-  if (user) {
-    // Redirect to appropriate dashboard based on role
-    return <Navigate to={user.role === 'staff' ? '/staff-dashboard' : '/member-dashboard'} replace />;
+  if (user && user.role === 'staff') {
+    // Only redirect staff to dashboard, let members access public routes
+    return <Navigate to="/staff-dashboard" replace />;
   }
   
   return <>{children}</>;
@@ -90,7 +90,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Public routes with layout - accessible to everyone */}
+            {/* Public routes with layout - accessible to everyone including logged-in members */}
             <Route path="/" element={<MainLayout><Index /></MainLayout>} />
             <Route path="/about" element={<MainLayout><About /></MainLayout>} />
             <Route path="/deposits" element={<MainLayout><Deposits /></MainLayout>} />
@@ -105,7 +105,7 @@ const App = () => (
             <Route path="/apply-loan" element={<MainLayout><ApplyLoan /></MainLayout>} />
             <Route path="/apply-membership" element={<MainLayout><ApplyMembership /></MainLayout>} />
             
-            {/* Login route - only accessible when not logged in */}
+            {/* Login route - redirects staff to dashboard but allows members to access */}
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
             
             {/* Member dashboard - only accessible to members */}
