@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PiggyBank, TrendingUp, Calendar, Calculator, CheckCircle, ArrowRight } from 'lucide-react';
+import ConditionalLink from '@/components/ConditionalLink';
 
 const SchemeCard = ({ icon: Icon, title, marathiTitle, interestRate, features, minAmount, tenure, isPopular = false }: any) => (
   <Card className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in relative ${isPopular ? 'border-gold border-2' : 'border-0'}`}>
@@ -42,11 +44,14 @@ const SchemeCard = ({ icon: Icon, title, marathiTitle, interestRate, features, m
         ))}
       </ul>
       
-      <Link to="/apply-deposit">
+      <ConditionalLink 
+        to="/apply-membership" 
+        memberTo="/apply-deposit"
+      >
         <Button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white">
           Apply Now / आता अर्ज करा
         </Button>
-      </Link>
+      </ConditionalLink>
     </CardContent>
   </Card>
 );
@@ -279,12 +284,15 @@ const Deposits = () => {
                       </div>
                     </div>
                     
-                    <Link to="/apply-deposit">
+                    <ConditionalLink 
+                      to="/apply-membership" 
+                      memberTo="/apply-deposit"
+                    >
                       <Button className="w-full mt-6 bg-gold text-primary-blue hover:bg-gold/90">
                         Start Your Investment
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
-                    </Link>
+                    </ConditionalLink>
                   </div>
                 </div>
               </CardContent>
@@ -346,14 +354,17 @@ const Deposits = () => {
             आजच सुरू करा आपली बचतीची वाटचाल
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/apply-deposit">
+            <ConditionalLink 
+              to="/apply-membership" 
+              memberTo="/apply-deposit"
+            >
               <Button 
                 size="lg" 
                 className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
               >
                 Open Account Now
               </Button>
-            </Link>
+            </ConditionalLink>
             <Link to="/book-appointment">
               <Button 
                 size="lg" 

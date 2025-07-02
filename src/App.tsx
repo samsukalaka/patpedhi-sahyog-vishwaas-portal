@@ -25,19 +25,30 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Protected Route Component
-const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode; requiredRole?: 'member' | 'staff' }) => {
+// Protected Route Component for Staff Only
+const StaffProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading } = useAuth();
   
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
   
-  if (!user) {
+  if (!user || user.role !== 'staff') {
     return <Navigate to="/login" replace />;
   }
   
-  if (requiredRole && user.role !== requiredRole) {
+  return <>{children}</>;
+};
+
+// Protected Route Component for Members Only
+const MemberProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
+  
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+  
+  if (!user || user.role !== 'member') {
     return <Navigate to="/login" replace />;
   }
   
@@ -79,32 +90,36 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Public routes with layout */}
+            {/* Public routes with layout - accessible to everyone */}
             <Route path="/" element={<MainLayout><Index /></MainLayout>} />
             <Route path="/about" element={<MainLayout><About /></MainLayout>} />
             <Route path="/deposits" element={<MainLayout><Deposits /></MainLayout>} />
             <Route path="/loans" element={<MainLayout><Loans /></MainLayout>} />
             <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
             <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
-            <Route path="/apply-membership" element={<MainLayout><ApplyMembership /></MainLayout>} />
+            <Route path="/book-appointment" element={<MainLayout><BookAppointment /></MainLayout>} />
+            
+            {/* Routes that redirect non-members to membership application */}
             <Route path="/open-account" element={<MainLayout><OpenAccount /></MainLayout>} />
             <Route path="/apply-deposit" element={<MainLayout><ApplyDeposit /></MainLayout>} />
             <Route path="/apply-loan" element={<MainLayout><ApplyLoan /></MainLayout>} />
-            <Route path="/book-appointment" element={<MainLayout><BookAppointment /></MainLayout>} />
+            <Route path="/apply-membership" element={<MainLayout><ApplyMembership /></MainLayout>} />
             
             {/* Login route - only accessible when not logged in */}
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
             
-            {/* Protected routes - no layout */}
+            {/* Member dashboard - only accessible to members */}
             <Route path="/member-dashboard" element={
-              <ProtectedRoute requiredRole="member">
+              <MemberProtectedRoute>
                 <MemberDashboard />
-              </ProtectedRoute>
+              </MemberProtectedRoute>
             } />
+            
+            {/* Staff dashboard - only accessible to staff */}
             <Route path="/staff-dashboard" element={
-              <ProtectedRoute requiredRole="staff">
+              <StaffProtectedRoute>
                 <StaffDashboard />
-              </ProtectedRoute>
+              </StaffProtectedRoute>
             } />
             
             <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />

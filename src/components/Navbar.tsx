@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -81,15 +83,42 @@ const Navbar = () => {
               Contact Us
             </Link>
 
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-marathi">स्वागत आहे</span>
-              <Link to="/login">
-                <Button 
-                  className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold"
-                >
-                  Login / Apply
-                </Button>
+            {/* Show Dashboard link for members */}
+            {user?.role === 'member' && (
+              <Link 
+                to="/member-dashboard" 
+                className={`hover:text-gold transition-colors ${
+                  isActive('/member-dashboard') ? 'text-gold' : ''
+                }`}
+              >
+                <User className="inline h-4 w-4 mr-1" />
+                Dashboard
               </Link>
+            )}
+
+            <div className="flex items-center space-x-2">
+              {user ? (
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm">नमस्ते, {user.name}</span>
+                  <Button 
+                    onClick={logout}
+                    className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold"
+                  >
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <span className="text-sm font-marathi">स्वागत आहे</span>
+                  <Link to="/login">
+                    <Button 
+                      className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold"
+                    >
+                      Login / Apply
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
@@ -112,14 +141,35 @@ const Navbar = () => {
               <Link to="/loans" className="block py-2 hover:text-gold transition-colors">Loans</Link>
               <Link to="/services" className="block py-2 hover:text-gold transition-colors">Services</Link>
               <Link to="/contact" className="block py-2 hover:text-gold transition-colors">Contact Us</Link>
-              <div className="pt-2">
-                <Link to="/login">
-                  <Button 
-                    className="w-full bg-gold text-primary-blue hover:bg-gold/90"
-                  >
-                    Login / Apply
-                  </Button>
+              
+              {/* Show Dashboard link for members in mobile */}
+              {user?.role === 'member' && (
+                <Link to="/member-dashboard" className="block py-2 hover:text-gold transition-colors">
+                  <User className="inline h-4 w-4 mr-1" />
+                  Dashboard
                 </Link>
+              )}
+
+              <div className="pt-2">
+                {user ? (
+                  <div className="space-y-2">
+                    <p className="text-sm text-gold">नमस्ते, {user.name}</p>
+                    <Button 
+                      onClick={logout}
+                      className="w-full bg-gold text-primary-blue hover:bg-gold/90"
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <Link to="/login">
+                    <Button 
+                      className="w-full bg-gold text-primary-blue hover:bg-gold/90"
+                    >
+                      Login / Apply
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

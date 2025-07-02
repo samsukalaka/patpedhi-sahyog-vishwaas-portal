@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PiggyBank, Calendar, Handshake, Users, Building, Award } from 'lucide-react';
+import ConditionalLink from '@/components/ConditionalLink';
 
 const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
   const [count, setCount] = useState(0);
@@ -78,14 +79,17 @@ const Index = () => {
               <p className="text-xl mb-8 opacity-90">
                 Your Trusted Cooperative Credit Society since 1995
               </p>
-              <Link to="/open-account">
+              <ConditionalLink 
+                to="/apply-membership" 
+                memberTo="/open-account"
+              >
                 <Button 
                   size="lg" 
                   className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
                 >
                   Open an Account आता! <Handshake className="ml-2 h-5 w-5" />
                 </Button>
-              </Link>
+              </ConditionalLink>
             </div>
             
             <div className="lg:w-1/2 grid grid-cols-2 gap-6 animate-scale-in">
@@ -169,6 +173,7 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Why Choose Patpedhi Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -221,14 +226,17 @@ const Index = () => {
             आजच आमच्या सोबत करा आपली आर्थिक प्रगती
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/open-account">
+            <ConditionalLink 
+              to="/apply-membership" 
+              memberTo="/open-account"
+            >
               <Button 
                 size="lg" 
                 className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105"
               >
                 Open Account Today
               </Button>
-            </Link>
+            </ConditionalLink>
             <Link to="/about">
               <Button 
                 size="lg" 
