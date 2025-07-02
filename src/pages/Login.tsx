@@ -1,25 +1,68 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState({
+  const [memberData, setMemberData] = useState({
     email: '',
     password: '',
     remember: false
   });
+  const [staffData, setStaffData] = useState({
+    staffId: '',
+    password: ''
+  });
+  const [activeTab, setActiveTab] = useState('member');
+  
+  const { login, isLoading } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleMemberSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', loginData);
-    // Add login logic here
+    const success = await login(memberData.email, memberData.password, 'member');
+    
+    if (success) {
+      toast({
+        title: "Login Successful",
+        description: "Welcome to Patpedhi Member Portal",
+      });
+      navigate('/member-dashboard');
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials. Try: member@patpedhi.com / member123",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleStaffSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const success = await login(staffData.staffId, staffData.password, 'staff');
+    
+    if (success) {
+      toast({
+        title: "Login Successful",
+        description: "Welcome to Patpedhi Staff Dashboard",
+      });
+      navigate('/staff-dashboard');
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials. Try: staff@patpedhi.com / staff123",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -39,11 +82,21 @@ const Login = () => {
           <p className="text-gray-600 font-marathi">आपले स्वागत आहे</p>
         </div>
 
-        <Tabs defaultValue="member" className="w-full">
+        <Tabs defaultValue="member" className="w-full" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="member">Member Login</TabsTrigger>
             <TabsTrigger value="staff">Staff Login</TabsTrigger>
           </TabsList>
+          
+          {/* Demo Credentials Info */}
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p className="text-sm text-blue-800 font-medium mb-1">Demo Credentials:</p>
+            {activeTab === 'member' ? (
+              <p className="text-xs text-blue-600">Email: member@patpedhi.com | Password: member123</p>
+            ) : (
+              <p className="text-xs text-blue-600">Email: staff@patpedhi.com | Password: staff123</p>
+            )}
+          </div>
 
           <TabsContent value="member">
             <Card>
@@ -51,7 +104,7 @@ const Login = () => {
                 <CardTitle className="text-center text-primary-blue">Member Portal</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleMemberSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email / Member ID</Label>
                     <div className="relative">
@@ -61,8 +114,8 @@ const Login = () => {
                         type="email"
                         placeholder="Enter your email or member ID"
                         className="pl-10"
-                        value={loginData.email}
-                        onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                        value={memberData.email}
+                        onChange={(e) => setMemberData({...memberData, email: e.target.value})}
                         required
                       />
                     </div>
@@ -77,8 +130,8 @@ const Login = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         className="pl-10 pr-10"
-                        value={loginData.password}
-                        onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                        value={memberData.password}
+                        onChange={(e) => setMemberData({...memberData, password: e.target.value})}
                         required
                       />
                       <button
@@ -96,8 +149,8 @@ const Login = () => {
                       <input 
                         type="checkbox" 
                         className="rounded border-gray-300"
-                        checked={loginData.remember}
-                        onChange={(e) => setLoginData({...loginData, remember: e.target.checked})}
+                        checked={memberData.remember}
+                        onChange={(e) => setMemberData({...memberData, remember: e.target.checked})}
                       />
                       <span>Remember me</span>
                     </label>
@@ -106,8 +159,12 @@ const Login = () => {
                     </Link>
                   </div>
 
-                  <Button type="submit" className="w-full bg-primary-blue hover:bg-primary-blue/90">
-                    Sign In
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-primary-blue hover:bg-primary-blue/90"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
                 </form>
 
@@ -129,7 +186,7 @@ const Login = () => {
                 <CardTitle className="text-center text-primary-blue">Staff Portal</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleStaffSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="staff-id">Staff ID</Label>
                     <div className="relative">
@@ -139,6 +196,8 @@ const Login = () => {
                         type="text"
                         placeholder="Enter your staff ID"
                         className="pl-10"
+                        value={staffData.staffId}
+                        onChange={(e) => setStaffData({...staffData, staffId: e.target.value})}
                         required
                       />
                     </div>
@@ -153,6 +212,8 @@ const Login = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         className="pl-10 pr-10"
+                        value={staffData.password}
+                        onChange={(e) => setStaffData({...staffData, password: e.target.value})}
                         required
                       />
                       <button
@@ -165,8 +226,12 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full bg-gold text-primary-blue hover:bg-gold/90">
-                    Staff Login
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gold text-primary-blue hover:bg-gold/90"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Logging In...' : 'Staff Login'}
                   </Button>
                 </form>
               </CardContent>
