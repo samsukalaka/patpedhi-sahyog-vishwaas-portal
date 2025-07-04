@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Handshake, Coins, Car, Calculator, CheckCircle, User, TrendingUp, Shield } from 'lucide-react';
+import ConditionalLink from '@/components/ConditionalLink';
 
 const LoanCard = ({ icon: Icon, title, marathiTitle, interestRate, features, maxAmount, tenure, isPopular = false }: any) => (
   <Card className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in relative ${isPopular ? 'border-gold border-2' : 'border-0'}`}>
@@ -43,11 +44,14 @@ const LoanCard = ({ icon: Icon, title, marathiTitle, interestRate, features, max
         ))}
       </ul>
       
-      <Link to="/apply-loan">
+      <ConditionalLink 
+        to="/apply-membership" 
+        memberTo="/apply-loan"
+      >
         <Button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white">
           Apply Now / आता अर्ज करा
         </Button>
-      </Link>
+      </ConditionalLink>
     </CardContent>
   </Card>
 );
