@@ -87,7 +87,7 @@ const Index = () => {
                   size="lg" 
                   className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
                 >
-                  Open an Account आता! <Handshake className="ml-2 h-5 w-5" />
+                  Open an Account आता! <Handshake className="ml-2 h-12 w-12" />
                 </Button>
               </ConditionalLink>
             </div>
