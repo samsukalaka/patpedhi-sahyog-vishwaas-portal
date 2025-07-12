@@ -26,9 +26,9 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#0056b3',
+					DEFAULT: '#1a4a7a',
 					foreground: 'hsl(var(--primary-foreground))',
-					blue: '#0056b3'
+					blue: '#1a4a7a'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -64,7 +64,7 @@ export default {
 					border: 'hsl(var(--sidebar-border)',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				gold: '#f8a51b'
+				gold: '#e6a817'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
