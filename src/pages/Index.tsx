@@ -70,18 +70,19 @@ const Index = () => {
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between">
-            <div className="lg:w-1/2 mb-10 lg:mb-0 animate-fade-in">
+            <div className="lg:w-1/2 mb-10 lg:mb-0 animate-fade-in text-center lg:text-left">
               <h1 className="text-4xl lg:text-6xl font-bold mb-4">
                 <span className="font-marathi text-gold">आपले विश्वास,</span>
                 <br />
                 <span>आमची जबाबदारी</span>
               </h1>
-              <p className="text-xl mb-8 opacity-90">
+              <p className="text-xl mb-12 opacity-90">
                 Your Trusted Cooperative Credit Society since 1995
               </p>
-              <div className="flex flex-col items-center gap-6">
-                <div className="p-6 bg-white/10 backdrop-blur-sm rounded-full animate-pulse">
-                  <Handshake className="h-32 w-32 text-gold" />
+              
+              <div className="flex flex-col items-center lg:items-start gap-8">
+                <div className="p-8 bg-white/10 backdrop-blur-sm rounded-full animate-pulse border-2 border-gold/30">
+                  <Handshake className="h-24 w-24 text-gold" />
                 </div>
                 <ConditionalLink 
                   to="/apply-membership" 
@@ -89,7 +90,7 @@ const Index = () => {
                 >
                   <Button 
                     size="lg" 
-                    className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
+                    className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-4 text-lg"
                   >
                     Open an Account आता!
                   </Button>
