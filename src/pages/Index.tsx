@@ -79,17 +79,22 @@ const Index = () => {
               <p className="text-xl mb-8 opacity-90">
                 Your Trusted Cooperative Credit Society since 1995
               </p>
-              <ConditionalLink 
-                to="/apply-membership" 
-                memberTo="/open-account"
-              >
-                <Button 
-                  size="lg" 
-                  className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
+              <div className="flex flex-col items-center gap-6">
+                <div className="p-6 bg-white/10 backdrop-blur-sm rounded-full animate-pulse">
+                  <Handshake className="h-32 w-32 text-gold" />
+                </div>
+                <ConditionalLink 
+                  to="/apply-membership" 
+                  memberTo="/open-account"
                 >
-                  Open an Account आता! <Handshake className="ml-2 h-12 w-12" />
-                </Button>
-              </ConditionalLink>
+                  <Button 
+                    size="lg" 
+                    className="bg-gold text-primary-blue hover:bg-gold/90 transition-all hover:scale-105 font-semibold px-8 py-3"
+                  >
+                    Open an Account आता!
+                  </Button>
+                </ConditionalLink>
+              </div>
             </div>
             
             <div className="lg:w-1/2 grid grid-cols-2 gap-6 animate-scale-in">
